@@ -1,0 +1,81 @@
+﻿@model HighlandTechSolutions.Models.AppointmentFormViewModel
+
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<h1>Book an Appointment</h1>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label>Select Services:</label>
+        @foreach (var service in Model.AvailableServices)
+        {
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" name="SelectedServiceIds" value="@service.Value" />
+                <label class="form-check-label">@service.Text</label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="Date">Appointment Date</label>
+        <input asp-for="Date" class="form-control" type="date" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="Time">Appointment Time</label>
+        <select id="timeDropdown" name="Time" class="form-control">
+            <option value="">-- Select a time --</option>
+        </select>
+        <span asp-validation-for="Time" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Submit</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('Date');
+            const timeDropdown = document.getElementById('timeDropdown');
+
+            dateInput.addEventListener('change', function () {
+                const selectedDate = this.value;
+
+                if (!selectedDate) return;
+
+                fetch(`/Appointments/GetAvailableTimes?date=${selectedDate}`)
+                    .then(response => response.json())
+                    .then(times => {
+                        timeDropdown.innerHTML = '<option value="">-- Select a time --</option>';
+
+                        if (times.length === 0) {
+                            const option = document.createElement('option');
+                            option.value = '';
+                            option.textContent = 'No available slots';
+                            timeDropdown.appendChild(option);
+                            return;
+                        }
+
+                        times.forEach(t => {
+                            const option = document.createElement('option');
+                            option.value = t;
+                            option.textContent = new Date(`1970-01-01T${t}`).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                            timeDropdown.appendChild(option);
+                        });
+                    });
+            });
+        });
+    </script>
+}

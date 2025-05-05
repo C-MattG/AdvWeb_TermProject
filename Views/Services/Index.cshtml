@@ -1,0 +1,81 @@
+﻿@model IEnumerable<HighlandTechSolutions.Models.Service>
+
+@{
+    ViewData["Title"] = "Services";
+}
+
+<h1>Our Services</h1>
+
+<div class="services-grid">
+    @foreach (var service in Model)
+    {
+        <div class="service-card">
+            <h3 class="service-title">@service.Name</h3>
+            <p class="service-description">
+                @if (service.Price == 0m)
+                {
+                    <span>@service.Description - Pricing may vary</span>
+                }
+                else
+                {
+                    <span>@service.Description</span>
+                <p class="service-price">Price: @service.Price.ToString("C")</p>
+                }
+            </p>
+
+            @if (User.IsInRole("Business"))
+            {
+                <p>
+                    <a asp-action="Edit" asp-route-id="@service.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@service.Id">Delete</a>
+                </p>
+            }
+        </div>
+    }
+</div>
+
+@if (User.IsInRole("Business"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">Add New Service</a>
+    </p>
+}
+
+<div class="quote-message">
+    <p>Please request a quote for any services not listed above. We will be happy to provide a solution that works for you.</p>
+</div>
+
+<style>
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .service-card {
+        background-color: #333;
+        padding: 1rem;
+        border-left: 5px solid #1aff1a;
+    }
+
+    .service-title {
+        color: #1aff1a;
+        margin-bottom: 0.5rem;
+    }
+
+    .service-description {
+        margin-bottom: 0.5rem;
+    }
+
+    .service-price {
+        font-weight: bold;
+    }
+
+    .quote-message {
+        text-align: center;
+        padding: 2rem;
+        color: #33ff33;
+        font-family: 'Roboto Mono', monospace;
+    }
+</style>
+

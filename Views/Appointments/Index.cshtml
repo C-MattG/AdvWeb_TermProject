@@ -1,0 +1,38 @@
+﻿@model IEnumerable<HighlandTechSolutions.Models.Appointment>
+
+@{
+    ViewData["Title"] = "All Appointments";
+}
+
+<h1>Appointments</h1>
+
+<table class="table table-bordered table-dark table-striped">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Services</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.User?.Name</td>
+                <td>@item.Date.ToShortDateString()</td>
+                <td>@DateTime.Today.Add(item.Time).ToString("h:mm tt")</td>
+                <td>
+                    @string.Join(", ", item.AppointmentServices.Select(a => a.Service.Name))
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

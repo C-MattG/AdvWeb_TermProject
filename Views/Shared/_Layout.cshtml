@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HighlandTechSolutions</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/HighlandTechSolutions.styles.css" asp-append-version="true" />
+    @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+    <meta name="csrf-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+            background-color: black;
+            color: #33ff33;
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-blocks {
+            display: flex;
+            flex-direction: column;
+            background-color: #111;
+            width: 100%;
+        }
+
+            .nav-blocks a,
+            .nav-blocks form button {
+                padding: 6px 12px;
+                font-size: 1rem;
+                font-weight: bold;
+                text-decoration: none;
+                color: #33ff33;
+                background-color: black;
+                display: block;
+                width: 100%;
+                text-align: left;
+                line-height: 1.4rem;
+                transition: background-color 0.2s;
+                border: none;
+            }
+
+                .nav-blocks a:hover,
+                .nav-blocks a.active,
+                .nav-blocks form button:hover {
+                    background-color: #444;
+                    color: white;
+                }
+
+        main {
+            margin-top: 22rem;
+            padding: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: black;
+        }
+
+            footer a {
+                color: #33ff33 !important;
+            }
+
+        .nav-blocks a {
+            padding: 6px 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #33ff33;
+            background-color: black;
+            display: block;
+            width: 100%;
+            text-align: left;
+            line-height: 1.4rem;
+            transition: background-color 0.2s;
+            border: none;
+        }
+
+        /* business user links */
+        .view-bookings:hover {
+            background-color: #6699FF;
+        }
+
+        .service-management:hover {
+            background-color: #FF6699; /* Change color for Service Management */
+        }
+
+        .view-past-services:hover {
+            background-color: #66FF99; /* Change color for View Past Services */
+        }
+
+        .nav-blocks a:hover,
+        .nav-blocks a.active {
+            background-color: #444;
+            color: white;
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-blocks">
+            <!-- Public Links (Accessible to all users) -->
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">Home</a>
+            <a asp-area="" asp-controller="Services" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Services" ? "active" : "")">Services</a>
+            <a asp-area="" asp-controller="Appointments" asp-action="Create">Book Appointment</a>
+            <a asp-area="" asp-controller="Home" asp-action="About" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")">About Us</a>
+            <a asp-area="" asp-controller="Home" asp-action="Contact" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Contact" ? "active" : "")">Contact Us</a>
+
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <!-- Links for Customers -->
+                @if (!User.IsInRole("Business"))
+                {
+                    <a asp-area="" asp-controller="Quotes" asp-action="Create">Request Quote</a>
+                    <a asp-area="" asp-controller="Appointments" asp-action="OrderTracking">Order Tracking</a>
+                }
+
+                <!-- Links for Business Users (Admin) -->
+                @if (User.IsInRole("Business"))
+                {
+                    <a asp-area="" asp-controller="Quotes" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Quotes" ? "active" : "")">Quote Management</a>
+                    <a asp-area="" asp-controller="Appointments" asp-action="Index" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Appointments" ? "active" : "")">View Bookings</a>
+                    <a asp-area="" asp-controller="Appointments" asp-action="History" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Appointments" ? "active" : "")">View Past Services</a>
+                }
+
+                <a asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a>
+
+                <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+            }
+        </div>
+    </div>
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <footer>
+        2025 - Highland Tech Solutions -
+        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> |
+        <a asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

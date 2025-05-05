@@ -1,0 +1,29 @@
+﻿@model HighlandTechSolutions.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Details";
+}
+
+<h1>Appointment Details</h1>
+
+<div>
+    <h4>Booked by:</h4>
+    <p>@Model.User?.Name (@Model.User?.Email)</p>
+
+    <h4>Date:</h4>
+    <p>@Model.Date.ToShortDateString()</p>
+
+    <h4>Time:</h4>
+    <p>@DateTime.Today.Add(Model.Time).ToString("h:mm tt")</p>
+
+    <h4>Services:</h4>
+    <ul>
+        @foreach (var s in Model.AppointmentServices)
+        {
+            <li>@s.Service?.Name</li>
+        }
+    </ul>
+</div>
+
+<a asp-action="Index">Back to List</a>
+

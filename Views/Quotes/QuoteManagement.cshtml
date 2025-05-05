@@ -1,0 +1,89 @@
+﻿@model IEnumerable<HighlandTechSolutions.Models.Quote>
+
+@{
+    ViewData["Title"] = "Quote Management";
+}
+
+<h1 class="text-success">Quote Management</h1>
+
+<div class="quote-management-container">
+    <h3 class="text-success">Submitted Quotes</h3>
+
+    @if (Model.Any())
+    {
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th>Quote ID</th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Details</th>
+                    <th>Date Submitted</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var quote in Model)
+                {
+                    <tr>
+                        <td>@quote.Id</td>
+                        <td>@quote.User.Name</td>
+                        <td>@quote.User.Email</td>
+                        <td>@quote.Details</td>
+                        <td>@quote.DateRequested.ToString("g")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-warning">No quotes have been submitted yet.</p>
+    }
+</div>
+
+<style>
+    .quote-management-container {
+        margin-top: 2rem;
+        color: #33ff33;
+    }
+
+        .quote-management-container h3 {
+            margin-bottom: 1rem;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .quote-management-container table {
+            width: 100%;
+            margin-top: 1rem;
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+            .quote-management-container table th,
+            .quote-management-container table td {
+                padding: 10px;
+                text-align: left;
+            }
+
+            .quote-management-container table th {
+                background-color: #444;
+                color: white;
+            }
+
+            .quote-management-container table tbody tr:nth-child(odd) {
+                background-color: #444;
+            }
+
+            .quote-management-container table tbody tr:nth-child(even) {
+                background-color: #555;
+            }
+
+            .quote-management-container table tbody tr:hover {
+                background-color: #666;
+            }
+
+        .quote-management-container .text-warning {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+</style>

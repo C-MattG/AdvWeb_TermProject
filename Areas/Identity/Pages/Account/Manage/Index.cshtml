@@ -1,0 +1,43 @@
+﻿@page
+@model HighlandTechSolutions.Areas.Identity.Pages.Account.Manage.IndexModel
+
+@{
+    ViewData["Title"] = "Your Profile";
+}
+
+<h1 class="text-success">Welcome, @Model.Username!</h1>
+
+<div class="row mt-4">
+    <!-- Profile Content -->
+    <div class="col-md-9" style="font-family: 'Roboto Mono', monospace; color: #33ff33;">
+        <div>
+            <p><strong>Name:</strong> @Model.Input.Name</p>
+            <p><strong>Email:</strong> @Model.Username</p>
+            <p><strong>Phone Number:</strong> @Model.Input.PhoneNumber</p>
+        </div>
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Input.Name"></label>
+                <input asp-for="Input.Name" class="form-control" />
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.PhoneNumber"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-2">Update Profile</button>
+        </form>
+
+        <a asp-controller="Appointments" asp-action="OrderTracking" class="btn btn-outline-success mt-4">View Order Tracking</a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
