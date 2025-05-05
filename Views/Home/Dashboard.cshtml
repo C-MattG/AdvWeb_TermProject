@@ -1,0 +1,64 @@
+﻿@model HighlandTechSolutions.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1 class="text-center" style="color: #33ff33;">Dashboard</h1>
+
+<div class="dashboard-stats">
+    <div class="stat-card">
+        <h3>Total Services</h3>
+        <p>@Model.TotalServices</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Quotes</h3>
+        <p>@Model.TotalQuotes</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Appointments</h3>
+        <p>@Model.TotalAppointments</p>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #000000; 
+        color: #33ff33; 
+        font-family: 'Roboto Mono', monospace;
+    }
+
+
+    .dashboard-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 2rem;
+        padding: 1rem;
+    }
+
+    .stat-card {
+        background-color: black; 
+        color: #33ff33; 
+        border: 2px solid #33ff33; 
+        border-radius: 8px;
+        width: 30%;
+        padding: 1rem;
+        box-shadow: 0 4px 8px black;
+        text-align: center;
+    }
+
+        .stat-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-card p {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+</style>
+
+
